@@ -296,7 +296,7 @@ export default function Home() {
       >
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10 text-center max-w-4xl mx-auto">
-          <p className="text-md tracking-[0.35em] uppercase text-white/80 mb-20 md:mb-40 mt-40 md:mt-80">
+          <p className="text-md tracking-[0.35em] uppercase text-white/80 mb-20 md:mb-40 mt-30 md:mt-40">
             {t[lang].gettingMarried}
           </p>
           <h1 className="font-script text-6xl md:text-8xl text-cream leading-tight mb-2">
@@ -317,7 +317,7 @@ export default function Home() {
           />
             */}
   <span className="h-px bg-white/70 w-12 md:w-24"></span>
-         <p className="text-white/90 text-lg md:text-xl tracking-wide mb-20">
+         <p className="text-white/90 text-xl md:text-2xl tracking-wide mb-10">
             {WEDDING_DATE_LABEL}
           </p>
         
