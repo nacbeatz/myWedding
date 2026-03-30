@@ -291,12 +291,12 @@ export default function Home() {
 
       {/* ───── Hero ───── */}
       <section
-        className="relative min-h-[95vh] md:min-h-[100vh] flex items-center justify-center px-4 bg-cover bg-center"
+        className="relative min-h-[90vh] md:min-h-[100vh] flex items-center justify-center px-4 bg-cover bg-center"
         style={{ backgroundImage: `url(${HERO_IMAGE})` }}
       >
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10 text-center max-w-4xl mx-auto">
-          <p className="text-md tracking-[0.35em] uppercase text-white/80 mb-20 md:mb-40 mt-30 md:mt-40">
+          <p className="text-md tracking-[0.35em] uppercase text-white/80 text-lg md:text-xl mb-20 md:mb-40 mt-10 md:mt-20">
             {t[lang].gettingMarried}
           </p>
           <h1 className="font-script text-6xl md:text-8xl text-cream leading-tight mb-2">
