@@ -1,0 +1,312 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --primary: oklch(0.7 0.2 70);
+  --primary-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(0.68 0.19 70);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --chart-1: oklch(0.7 0.2 70);
+  
+  /* Wedding elegant colors */
+  --cream: #F5F1E8;
+  --gold: #D4AF37;
+  --burgundy: #8B3A3A;
+  --dark: #2C2C2C;
+  --chart-2: oklch(0.65 0.18 70);
+  --chart-3: oklch(0.6 0.16 70);
+  --chart-4: oklch(0.55 0.14 70);
+  --chart-5: oklch(0.5 0.12 70);
+  --radius: 0.75rem;
+  --background: oklch(0.98 0.01 70);
+  --foreground: oklch(0.25 0.02 65);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.25 0.02 65);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.25 0.02 65);
+  --secondary: oklch(0.95 0.01 70);
+  --secondary-foreground: oklch(0.3 0.02 65);
+  --muted: oklch(0.92 0.01 70);
+  --muted-foreground: oklch(0.5 0.02 65);
+  --accent: oklch(0.7 0.2 70);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.94 0.01 70);
+  --input: oklch(0.96 0.01 70);
+  --ring: oklch(0.7 0.2 70);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.25 0.02 65);
+  --sidebar-accent: oklch(0.7 0.2 70);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.94 0.01 70);
+  --sidebar-ring: oklch(0.7 0.2 70);
+}
+
+.dark {
+  --primary: oklch(0.75 0.22 70);
+  --primary-foreground: oklch(0.2 0.02 65);
+  --sidebar-primary: oklch(0.7 0.2 70);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --background: oklch(0.2 0.02 65);
+  --foreground: oklch(0.95 0.01 70);
+  --card: oklch(0.28 0.02 65);
+  --card-foreground: oklch(0.95 0.01 70);
+  --popover: oklch(0.28 0.02 65);
+  --popover-foreground: oklch(0.95 0.01 70);
+  --secondary: oklch(0.35 0.02 65);
+  --secondary-foreground: oklch(0.8 0.01 70);
+  --muted: oklch(0.4 0.02 65);
+  --muted-foreground: oklch(0.75 0.01 70);
+  --accent: oklch(0.75 0.22 70);
+  --accent-foreground: oklch(0.2 0.02 65);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.35 0.02 65);
+  --input: oklch(0.4 0.02 65);
+  --ring: oklch(0.75 0.22 70);
+  --chart-1: oklch(0.75 0.22 70);
+  --chart-2: oklch(0.7 0.2 70);
+  --chart-3: oklch(0.65 0.18 70);
+  --chart-4: oklch(0.6 0.16 70);
+  --chart-5: oklch(0.55 0.14 70);
+  --sidebar: oklch(0.28 0.02 65);
+  --sidebar-foreground: oklch(0.95 0.01 70);
+  --sidebar-accent: oklch(0.75 0.22 70);
+  --sidebar-accent-foreground: oklch(0.2 0.02 65);
+  --sidebar-border: oklch(0.35 0.02 65);
+  --sidebar-ring: oklch(0.75 0.22 70);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Cormorant Garamond', 'Georgia', serif;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant Garamond', 'Georgia', serif;
+    @apply font-semibold;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 1280px;
+    }
+  }
+
+  .wedding-divider {
+    @apply my-8 flex items-center justify-center gap-4;
+  }
+
+  .wedding-divider::before,
+  .wedding-divider::after {
+    @apply flex-1 h-px bg-accent;
+    content: '';
+  }
+
+  .wedding-divider-icon {
+    @apply text-accent text-2xl;
+  }
+
+  .btn-elegant {
+    @apply px-8 py-3 rounded-lg font-semibold transition-all duration-300;
+    @apply bg-accent text-accent-foreground hover:shadow-lg hover:scale-105;
+  }
+
+  .card-elegant {
+    @apply rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300;
+    @apply bg-card text-card-foreground border border-border;
+  }
+
+  .text-gold {
+    @apply text-accent;
+  }
+}
+
+/* Wedding color utilities */
+.bg-cream {
+  background-color: var(--cream);
+}
+
+.bg-gold-50 {
+  background-color: #FEF9F0;
+}
+
+.bg-gold-100 {
+  background-color: #FDF4E0;
+}
+
+.bg-gold-200 {
+  background-color: #F5E6C8;
+}
+
+.bg-gold-400 {
+  background-color: #E6D5A8;
+}
+
+.bg-gold-500 {
+  background-color: var(--gold);
+}
+
+.bg-gold-600 {
+  background-color: #C19B1B;
+}
+
+.bg-burgundy-50 {
+  background-color: #F5EDED;
+}
+
+.bg-burgundy-200 {
+  background-color: #D9A5A5;
+}
+
+.bg-dark {
+  background-color: var(--dark);
+}
+
+.text-gold-500 {
+  color: var(--gold);
+}
+
+.text-burgundy {
+  color: var(--burgundy);
+}
+
+.text-dark {
+  color: var(--dark);
+}
+
+.text-dark-600 {
+  color: #666666;
+}
+
+.text-cream {
+  color: var(--cream);
+}
+
+.text-cream-600 {
+  color: #D9D5CC;
+}
+
+.border-gold-100 {
+  border-color: #FDF4E0;
+}
+
+.border-gold-200 {
+  border-color: #F5E6C8;
+}
+
+.border-gold-300 {
+  border-color: #E6D5A8;
+}
+
+.border-gold-400 {
+  border-color: #D9C896;
+}
+
+.font-script {
+  font-family: 'Imperial Script', cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.font-body {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.text-gold-700 {
+  color: #A68A2A;
+}
+
+.text-dark-500 {
+  color: #888888;
+}
+
+.hover\:bg-gold-600:hover {
+  background-color: #C19B1B;
+}
+
+.hover\:bg-gold-700:hover {
+  background-color: #A68A2A;
+}
