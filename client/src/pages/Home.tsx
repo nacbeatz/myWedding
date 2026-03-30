@@ -300,14 +300,14 @@ export default function Home() {
             {t[lang].gettingMarried}
           </p>
           <h1 className="font-script text-6xl md:text-8xl text-cream leading-tight mb-2">
-            Anaclet
+            Claudine
           </h1>
         
           <p className="text-white text-4xl italic mb-1">&amp;
         
           </p>
           <h1 className="font-script text-6xl md:text-8xl text-cream leading-tight mb-40">
-            Claudine
+            Anaclet
           </h1>
 
           {/* <img
@@ -317,12 +317,12 @@ export default function Home() {
           />
             */}
   <span className="h-px bg-white/70 w-12 md:w-24"></span>
-         <p className="text-white/90 text-xl md:text-2xl tracking-wide mb-10">
+         <p className="text-white/90 text-2xl md:text-3xl tracking-wide mb-10">
             {WEDDING_DATE_LABEL}
           </p>
         
           <span className="h-px bg-white/70 w-12 md:w-24"></span>
-          <p className="text-white/70 text-xs tracking-[0.25em] uppercase">
+          <p className="text-white/70 text-xs tracking-[0.25em] text-xl md:text-2xl uppercase">
             RSVP <span className="inline-block animate-bounce">↓</span>
           </p>
         </div>
@@ -335,7 +335,7 @@ export default function Home() {
             <h2 className="font-script text-5xl md:text-6xl text-burgundy mb-1">
               {t[lang].countdown}
             </h2>
-            <p className="text-xs tracking-[0.3em] uppercase text-dark-500">
+            <p className="text-xs tracking-[0.3em] uppercase text-bold text-md md:text-xl text-dark-500">
               {t[lang].until} {WEDDING_DATE_LABEL}
             </p>
 
@@ -354,7 +354,7 @@ export default function Home() {
           </div>
 
           <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl border border-gold-100 p-10 md:p-14 mb-12">
-            <img src={CUPID_IMAGE} alt="" className="hidden md:block absolute right-10 top-8 w-28 opacity-80" />
+            
             <h3 className="font-script text-5xl md:text-6xl text-burgundy text-center mb-5">
               {t[lang].welcome}
             </h3>
@@ -386,9 +386,9 @@ export default function Home() {
               { step: 3, title: t[lang].step3Title, desc: t[lang].step3Desc },
             ].map(item => (
               <div key={item.step} className="text-center group">
-                <div className="w-14 h-14 bg-gradient-to-br from-gold-400 to-gold-500 rounded-full flex items-center justify-center mx-auto mb-5 text-xl font-semibold text-white shadow-md group-hover:shadow-lg transition-shadow">
-                  {item.step}
-                </div>
+              <div className="w-14 h-14 bg-gold-500 rounded-full flex items-center justify-center mx-auto mb-5 text-2xl font-bold text-burgundy shadow-md group-hover:shadow-lg transition-shadow">
+  {item.step}
+</div>
                 <h3 className="text-xl font-semibold text-dark mb-3">{item.title}</h3>
                 <p className="text-dark-600 leading-relaxed">{item.desc}</p>
               </div>
