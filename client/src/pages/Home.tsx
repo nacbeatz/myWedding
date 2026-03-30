@@ -291,12 +291,12 @@ export default function Home() {
 
       {/* ───── Hero ───── */}
       <section
-        className="relative min-h-[100vh] flex items-center justify-center px-4 bg-cover bg-center"
+        className="relative min-h-[95vh] md:min-h-[100vh] flex items-center justify-center px-4 bg-cover bg-center"
         style={{ backgroundImage: `url(${HERO_IMAGE})` }}
       >
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10 text-center max-w-4xl mx-auto">
-          <p className="text-md tracking-[0.35em] uppercase text-white/80 mb-40">
+          <p className="text-md tracking-[0.35em] uppercase text-white/80 mb-20 md:mb-40 mt-40 md:mt-80">
             {t[lang].gettingMarried}
           </p>
           <h1 className="font-script text-6xl md:text-8xl text-cream leading-tight mb-2">
@@ -310,15 +310,17 @@ export default function Home() {
             Claudine
           </h1>
 
-          <img
+          {/* <img
             src={CUPID_IMAGE}
             alt="Cupid"
             className="mx-auto w-24 md:w-28 opacity-90 mb-6"
           />
+            */}
   <span className="h-px bg-white/70 w-12 md:w-24"></span>
-          <p className="text-white/90 text-lg md:text-xl tracking-wide mb-2">
+         <p className="text-white/90 text-lg md:text-xl tracking-wide mb-20">
             {WEDDING_DATE_LABEL}
           </p>
+        
           <span className="h-px bg-white/70 w-12 md:w-24"></span>
           <p className="text-white/70 text-xs tracking-[0.25em] uppercase">
             RSVP <span className="inline-block animate-bounce">↓</span>
@@ -412,7 +414,6 @@ export default function Home() {
                   className="w-full h-56 object-cover rounded-xl mb-6"
                 />
                 <h3 className="font-script text-3xl md:text-4xl text-dark mb-3">{t[lang].venueName}</h3>
-                <p className="text-dark-600">{WEDDING_DATE_LABEL} at 4:00 PM</p>
                 <p className="text-dark-600">{WEDDING_LOCATION}</p>
               </div>
               <div className="h-64 md:h-72">
