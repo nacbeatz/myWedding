@@ -457,21 +457,21 @@ export default function Home() {
               {DAY_PROGRAMME_KEYS.map((item, i) => (
                 <div key={`${item.time}-${i}`} className="relative grid grid-cols-[1fr_auto_1fr] items-center">
                   {/* Left side content */}
-                  <div className={`py-8 pr-8 text-right ${item.side === "left" ? "" : "opacity-0"}`}>
-                    <p className="text-xl md:text-2xl font-semibold text-dark">{item.time}</p>
-                    <p className="text-sm tracking-[0.15em] uppercase text-dark-600">{t[lang][item.key]}</p>
+                  <div className={`py-3 md:py-8 pr-4 md:pr-8 text-right ${item.side === "left" ? "" : "opacity-0"}`}>
+                    <p className="text-lg md:text-2xl font-semibold text-dark">{item.time}</p>
+                    <p className="text-xs md:text-sm tracking-[0.15em] uppercase text-dark-600">{t[lang][item.key]}</p>
                   </div>
 
                   {/* Center dot + horizontal line */}
                   <div className="relative flex items-center justify-center">
-                    <div className="w-3.5 h-3.5 rounded-full bg-gold-500 border-2 border-white shadow-sm z-10" />
-                    <div className={`absolute h-px w-8 bg-gold-300 ${item.side === "left" ? "right-1/2 mr-1.5" : "left-1/2 ml-1.5"}`} />
+                    <div className="w-3 h-3 md:w-3.5 md:h-3.5 rounded-full bg-gold-500 border-2 border-white shadow-sm z-10" />
+                    <div className={`absolute h-px w-5 md:w-8 bg-gold-300 ${item.side === "left" ? "right-1/2 mr-1.5" : "left-1/2 ml-1.5"}`} />
                   </div>
 
                   {/* Right side content */}
-                  <div className={`py-8 pl-8 text-left ${item.side === "right" ? "" : "opacity-0"}`}>
-                    <p className="text-xl md:text-2xl font-semibold text-dark">{item.time}</p>
-                    <p className="text-sm tracking-[0.15em] uppercase text-dark-600">{t[lang][item.key]}</p>
+                  <div className={`py-3 md:py-8 pl-4 md:pl-8 text-left ${item.side === "right" ? "" : "opacity-0"}`}>
+                    <p className="text-lg md:text-2xl font-semibold text-dark">{item.time}</p>
+                    <p className="text-xs md:text-sm tracking-[0.15em] uppercase text-dark-600">{t[lang][item.key]}</p>
                   </div>
                 </div>
               ))}
