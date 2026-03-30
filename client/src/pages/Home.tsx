@@ -93,8 +93,8 @@ const t = {
     preWeddingIntro: "Come Say Hello...",
     preWeddingDesc:
       "These are informal gatherings, feel free to join us if you are in Brussels before the wedding day.",
-    welcomeDrinks: "Welcome Drinks",
-    familyMeetGreet: "Family Meet & Greet",
+    dowry: "Dowry Ceremony",
+    religiousCeremony: "Religious Ceremony",
     gifts: "Gifts",
     giftsText:
       "Your presence is our greatest gift. If you wish to give us something, please find our bank account information below:",
@@ -159,8 +159,8 @@ const t = {
     preWeddingIntro: "Bana n'imiryango yacu",
     preWeddingDesc:
       "Izi ni nama zidasanzwe, wemerewe kuza niba uri muri Bruxelles mbere y'umunsi w'ubukwe.",
-    welcomeDrinks: "Ibinyobwa byo Kwakira",
-    familyMeetGreet: "Guhura n'Umuryango",
+    dowry: "Gusaba no Gukwa",
+    religiousCeremony: "Gusezerana Imbere y'Imana",
     gifts: "Impano",
     giftsText:
       "Kubaho kwawe ni impano itangaje ku buzima bwacu. Niba wifuza kudushyigikira birenze kuhaboneka, koresha izo konti",
@@ -495,8 +495,8 @@ export default function Home() {
 
           <div className="space-y-5">
             {[
-              { emoji: "🥂", title: t[lang].welcomeDrinks, date: "Friday, July 24th, 2026", time: "8:00 PM", venue: "Grand Place, Brussels" },
-              { emoji: "☕", title: t[lang].familyMeetGreet, date: "Saturday, July 25th, 2026", time: "11:00 AM", venue: "Sablon District, Brussels" },
+              { emoji: "🥂", title: t[lang].dowry, date: "Saturday, June 6th, 2026", time: "8:00 PM", venue: "Kigali, Rwanda" },
+              { emoji: "☕", title: t[lang].religiousCeremony, date: "Saturday, July 25th, 2026", time: "11:00 AM", venue: "ADEPR Europe, Belgium" },
             ].map(event => (
               <Card key={event.title} className="rounded-2xl border border-gold-100 bg-[#f7f4ec] shadow-lg p-8 text-center">
                 <div className="text-4xl mb-3">{event.emoji}</div>
