@@ -25,9 +25,15 @@ export type TableAvailability = {
   status: "available" | "reserved" | "full";
 };
 
-// Initialize database connection
+let tablesSeeded = false;
+
+// Initialize database connection and seed tables on first call
 export async function initializeDB() {
   await connectToDatabase();
+  if (!tablesSeeded) {
+    await initializeSeatingTables(25);
+    tablesSeeded = true;
+  }
 }
 
 // ============ SEATING TABLES ============
@@ -191,6 +197,15 @@ export async function deleteBooking(id: string) {
 export async function getBookingsByEmail(email: string) {
   await connectToDatabase();
   return Booking.find({ guestEmail: email }).populate("tableId");
+}
+
+export async function getBookingsByName(name: string) {
+  await connectToDatabase();
+  const bookings = await Booking.find({ guestName: { $regex: name, $options: "i" } }).lean();
+  const tableIds = [...new Set(bookings.map(b => b.tableId))];
+  const tables = await SeatingTable.find({ _id: { $in: tableIds } }).lean();
+  const tableMap = new Map(tables.map(t => [String(t._id), t.tableNumber]));
+  return bookings.map(b => ({ ...b, tableNumber: tableMap.get(b.tableId) ?? null }));
 }
 
 // ============ GUESTS ============

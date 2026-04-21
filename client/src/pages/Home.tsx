@@ -22,7 +22,7 @@ const HERO_IMAGE =
   "https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1920&q=80";
 const WEDDING_DATE = new Date("2026-07-25T00:00:00+02:00");
 const WEDDING_DATE_LABEL = "25 July 2026";
-const WEDDING_LOCATION = "Brussels, Belgium";
+const WEDDING_LOCATION = "Chaussée de Gand 389, 1080 Molenbeek-Saint-Jean";
 const WELCOME_GALLERY_IMAGES = [
   "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80",
   "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=600&q=80",
@@ -49,7 +49,7 @@ type RSVPState = {
   numberOfGuests: number;
   guestName: string;
   guestEmail: string;
-  dietaryRequirements: string;
+  guestPhone: string;
   childrenAttending: "yes" | "no";
   message: string;
   tableId: string;
@@ -78,15 +78,15 @@ const t = {
     welcomeText:
       "We warmly invite you to celebrate our wedding day with us in Brussels, Belgium. We look forward to sharing this unforgettable moment with our most special people.",
     howItWorks: "How It Works",
-    step1Title: "Browse Tables",
-    step1Desc: "View our interactive seating chart and explore available tables for your group.",
-    step2Title: "Book Your Seat",
-    step2Desc: "Reserve your table and provide guest details. You'll receive a confirmation code.",
-    step3Title: "Celebrate",
-    step3Desc: "Join us on the special day and celebrate love with us and our loved ones.",
+    step1Title: "Send Your RSVP",
+    step1Desc: "Confirm your attendance using the RSVP form below. Select a table, enter your name, email, and WhatsApp number.",
+    step2Title: "Check Your Table",
+    step2Desc: "Already RSVPed? Use the \"Check Your Table\" button and search your name to see your assigned table number.",
+    step3Title: "Join Us on the Day",
+    step3Desc: "Arrive at Chau. de Gand 389, 1080 Molenbeek-Saint-Jean, find your table, and celebrate this special moment with us.",
     venue: "The Venue",
     venueWhere: "Where we celebrate",
-    venueName: "The Wedding House",
+    venueName: "Event Center - Bruxelles",
     openInMaps: "Open in Maps",
     dayProgramme: "Day Programme",
     preWedding: "Pre-Wedding Events",
@@ -117,12 +117,18 @@ const t = {
     person1: "Person 1 (Main contact)",
     fullName: "Full name",
     emailAddress: "Email address",
-    dietary: "Dietary requirements",
-    dietaryPlaceholder: "e.g. vegetarian, allergies, etc.",
+    dietary: "Phone (WhatsApp)",
+    dietaryPlaceholder: "e.g. +1 234 567 8900",
     messageCouple: "Message for the couple",
     messagePlaceholder: "Is there anything you'd like to tell us?",
     sending: "Sending...",
     sendRsvp: "Send RSVP",
+    checkMyTable: "Check Your Table",
+    checkTablePlaceholder: "Enter your name to find your table",
+    checkTableSearch: "Search",
+    checkTableSearching: "Searching...",
+    checkTableResult: "Your table",
+    checkTableNotFound: "No booking found for that name.",
     readyCta: "Ready to Celebrate With Us?",
     readyCtaSub: "Reserve your table now and be part of this special celebration",
     rsvpNow: "RSVP Now",
@@ -144,15 +150,15 @@ const t = {
     welcomeText:
       "Twishimiye kubatumira kwishimana natwe ku munsi w'ubukwe bwacu i Bruxelles mu Bubiligi. Kuza kwifatanya natwe kuri uyu munsi bizatunezeza cyane.",
     howItWorks: "Uko Bigenda",
-    step1Title: "Reba Ameza",
-    step1Desc: "Reba urutonde rw'imyanya kandi ushakishe ameza aboneka y'itsinda ryawe.",
-    step2Title: "Tegura Umwanya",
-    step2Desc: "Tegura umeza wawe utange amakuru y'abashyitsi. Uzahabwa kode y'icyemezo.",
-    step3Title: "Twizihize",
-    step3Desc: "Twifatanye ku munsi wihariye dusangire urukundo n'abacu.",
+    step1Title: "Ohereza RSVP Yawe",
+    step1Desc: "Emeza ko uzaza ukoresheje ifishi ya RSVP iri hasi. Hitamo ameza, shyiramo amazina, E-mail na nimero ya WhatsApp ubonekaho.",
+    step2Title: "Reba Ameza Yawe",
+    step2Desc: "Wariyandikishije muri RSVP? Niwibagirwa nunmero y'ameza ushobora kuyareba ushakishije amazina yawe.",
+    step3Title: "Twifatanye ku Munsi",
+    step3Desc: "Ni karibu kuri Chau. de Gand 389, 1080 Molenbeek-Saint-Jean, ubone ameza yawe twifatanye ku munsi udasanzwe.",
     venue: "Aho bizabera",
     venueWhere: "Aho tuzasezeranira",
-    venueName: "Inzu y'Ubukwe",
+    venueName: "Event Center - Bruxelles",
     openInMaps: "Fungura ku ikarita",
     dayProgramme: "Gahunda y'Umunsi",
     preWedding: "Indi mihango",
@@ -183,12 +189,18 @@ const t = {
     person1: "Uwo twabaza",
     fullName: "Amazina yombi",
     emailAddress: "E-mail",
-    dietary: "Ibyo kurya bidasanzwe",
-    dietaryPlaceholder: "urugero: vegetarian, allergies, n'ibindi.",
+    dietary: "Telefone (WhatsApp)",
+    dietaryPlaceholder: "urugero: +250 78 000 0000",
     messageCouple: "Ubutumwa bwihariye",
     messagePlaceholder: "Andikira abategura ubukwe",
     sending: "Kohereza...",
     sendRsvp: "Ohereza",
+    checkMyTable: "Reba Ameza Yawe",
+    checkTablePlaceholder: "Injiza amazina yawe",
+    checkTableSearch: "Shakisha",
+    checkTableSearching: "Gushakisha...",
+    checkTableResult: "Ameza yawe",
+    checkTableNotFound: "Nta meza murafata. Turabategereje ahubwo!",
     readyCta: "Witeguye Kwishimana Natwe?",
     readyCtaSub: "Fata umwanya uzicaramo muri ubu bukwe bwacu",
     rsvpNow: "Kanda hano",
@@ -210,7 +222,7 @@ export default function Home() {
     numberOfGuests: 1,
     guestName: "",
     guestEmail: "",
-    dietaryRequirements: "",
+    guestPhone: "",
     childrenAttending: "no",
     message: "",
     tableId: "",
@@ -221,11 +233,19 @@ export default function Home() {
     return () => window.clearInterval(id);
   }, []);
 
+  const [tableCheckOpen, setTableCheckOpen] = useState(false);
+  const [tableCheckName, setTableCheckName] = useState("");
+  const [tableCheckQuery, setTableCheckQuery] = useState("");
+
   const availableTablesQuery = trpc.wedding.getAvailableTables.useQuery(
     { numberOfGuests: rsvp.numberOfGuests },
     { enabled: rsvp.attending === "yes" }
   );
   const createBookingMutation = trpc.wedding.createBooking.useMutation();
+  const tableCheckResults = trpc.wedding.getBookingsByName.useQuery(
+    { name: tableCheckQuery },
+    { enabled: tableCheckQuery.length > 0 }
+  );
 
   useEffect(() => {
     if (rsvp.attending !== "yes" || !rsvp.tableId) return;
@@ -247,7 +267,6 @@ export default function Home() {
     if (!rsvp.tableId) { toast.error("Please select a table."); return; }
 
     const specialRequests = [
-      rsvp.dietaryRequirements ? `Dietary: ${rsvp.dietaryRequirements}` : null,
       `Children: ${rsvp.childrenAttending}`,
       rsvp.message ? `Message: ${rsvp.message}` : null,
     ].filter(Boolean).join(" | ");
@@ -257,6 +276,7 @@ export default function Home() {
         tableId: rsvp.tableId,
         guestName: rsvp.guestName.trim(),
         guestEmail: rsvp.guestEmail.trim(),
+        guestPhone: rsvp.guestPhone || undefined,
         numberOfGuests: rsvp.numberOfGuests,
         specialRequests: specialRequests || undefined,
       });
@@ -419,7 +439,7 @@ export default function Home() {
               <div className="h-64 md:h-72">
                 <iframe
                   title="Venue map"
-                  src="https://www.google.com/maps?q=Brussels%2C%20Belgium&output=embed"
+                  src="https://www.google.com/maps?q=Chaussée+de+Gand+389%2C+1080+Molenbeek-Saint-Jean&output=embed"
                   className="w-full h-full border-0"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
@@ -427,7 +447,7 @@ export default function Home() {
               </div>
               <div className="py-4 text-center border-t border-gold-100">
                 <a
-                  href="https://maps.google.com/?q=Brussels,Belgium"
+                  href="https://maps.google.com/?q=Chaussée+de+Gand+389,+1080+Molenbeek-Saint-Jean"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 tracking-[0.15em] text-xs uppercase font-semibold text-dark-600 hover:text-burgundy transition-colors"
@@ -523,13 +543,13 @@ export default function Home() {
             </p>
             <div className="space-y-4">
               {[
-                { bank: "KBC Bank – Anaclet Nsabimana", iban: "BE12 3456 7890 1234", bic: "KREDBEBB" },
-                { bank: "BNP Paribas Fortis – Ingabire Claudine", iban: "BE98 7654 3210 9876", bic: "GEBABEBB" },
+                { bank: "Anaclet Nsabimana - ING Bank", iban: "BE05 3631 1987 6175", bic: "KREDBEBB" },
+                { bank: "Ingabire Claudine - ING Bank", iban: "BE98 7654 3210 9876", bic: "GEBABEBB" },
               ].map(acc => (
                 <Card key={acc.bic} className="bg-[#efede8] border border-gold-100 rounded-xl p-6 shadow-sm">
                   <h3 className="text-base tracking-[0.14em] uppercase font-semibold text-dark mb-3">{acc.bank}</h3>
-                  <p className="text-dark-600 text-sm">IBAN: {acc.iban}</p>
-                  <p className="text-dark-600 text-sm">BIC/SWIFT: {acc.bic}</p>
+                  <p className="text-dark-600 text-sm">IBAN: {acc.iban}   (BIC/SWIFT: {acc.bic})</p>
+                  <p className="text-dark-600 text-sm">MOTIF: Cadeau Mariage</p>
                 </Card>
               ))}
             </div>
@@ -550,6 +570,57 @@ export default function Home() {
               <div className="text-center py-12">
                 <h3 className="font-script text-4xl text-burgundy mb-3">{t[lang].thankYou}</h3>
                 <p className="text-dark-600">{t[lang].rsvpReceived}</p>
+              </div>
+            ) : tableCheckOpen ? (
+              <div className="space-y-4">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="text-gold-700 hover:bg-gold-50 -ml-2"
+                  onClick={() => { setTableCheckOpen(false); setTableCheckName(""); setTableCheckQuery(""); }}
+                >
+                  ← {lang === "en" ? "Back to RSVP" : "Subira Gusaba"}
+                </Button>
+                <h3 className="text-xl font-semibold text-dark">{t[lang].checkMyTable}</h3>
+                <div className="flex gap-2">
+                  <Input
+                    placeholder={t[lang].checkTablePlaceholder}
+                    value={tableCheckName}
+                    onChange={e => setTableCheckName(e.target.value)}
+                    onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); setTableCheckQuery(tableCheckName.trim()); } }}
+                    className="bg-white"
+                    autoFocus
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="border-gold-300 text-gold-700 hover:bg-gold-50 shrink-0"
+                    onClick={() => setTableCheckQuery(tableCheckName.trim())}
+                    disabled={tableCheckResults.isFetching}
+                  >
+                    {tableCheckResults.isFetching ? t[lang].checkTableSearching : t[lang].checkTableSearch}
+                  </Button>
+                </div>
+
+                {tableCheckQuery.length > 0 && !tableCheckResults.isFetching && (
+                  tableCheckResults.data && tableCheckResults.data.length > 0 ? (
+                    <div className="space-y-2 pt-1">
+                      {tableCheckResults.data.map((booking: any) => {
+                        const tableNumber = booking.tableNumber;
+                        return (
+                          <div key={booking._id} className="flex items-center justify-between bg-gold-50 border border-gold-200 rounded-xl px-5 py-4">
+                            <span className="font-medium text-dark">{booking.guestName}</span>
+                            <span className="text-xl font-bold text-gold-700">
+                              {lang === "en" ? "Table" : "Ameza"} {tableNumber}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground text-center pt-2">{t[lang].checkTableNotFound}</p>
+                  )
+                )}
               </div>
             ) : (
               <form onSubmit={handleRsvpSubmit} className="space-y-6">
@@ -626,7 +697,7 @@ export default function Home() {
                   <Input type="email" placeholder={t[lang].emailAddress} value={rsvp.guestEmail} onChange={e => setRsvp(prev => ({ ...prev, guestEmail: e.target.value }))} className="bg-white" required={rsvp.attending === "yes"} />
                   <div>
                     <Label className="text-dark-600 text-sm">{t[lang].dietary}</Label>
-                    <Input placeholder={t[lang].dietaryPlaceholder} value={rsvp.dietaryRequirements} onChange={e => setRsvp(prev => ({ ...prev, dietaryRequirements: e.target.value }))} className="bg-white mt-1" />
+                    <Input type="tel" placeholder={t[lang].dietaryPlaceholder} value={rsvp.guestPhone} onChange={e => setRsvp(prev => ({ ...prev, guestPhone: e.target.value }))} className="bg-white mt-1" />
                   </div>
                 </div>
 
@@ -639,6 +710,15 @@ export default function Home() {
                 <Button type="submit" className="w-full bg-gold-600 hover:bg-gold-700 text-white" disabled={createBookingMutation.isPending}>
                   <SendHorizontal className="h-4 w-4 mr-2" />
                   {createBookingMutation.isPending ? t[lang].sending : t[lang].sendRsvp}
+                </Button>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full border-gold-300 text-gold-700 hover:bg-gold-50"
+                  onClick={() => { setTableCheckOpen(true); setTableCheckName(""); setTableCheckQuery(""); }}
+                >
+                  {t[lang].checkMyTable}
                 </Button>
               </form>
             )}

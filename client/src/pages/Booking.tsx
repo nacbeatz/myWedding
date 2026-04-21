@@ -7,11 +7,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Link, useLocation } from "wouter";
 import { ArrowLeft, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
+import { trpc } from "@/lib/trpc";
 
 export default function Booking() {
   const [location] = useLocation();
   const tableParam = new URLSearchParams(location.split("?")[1]).get("table");
-  
+
   const [selectedTable, setSelectedTable] = useState<number | null>(
     tableParam ? parseInt(tableParam) : null
   );
@@ -22,11 +23,31 @@ export default function Booking() {
     numberOfGuests: "1",
     specialRequests: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingComplete, setBookingComplete] = useState(false);
   const [confirmationCode, setConfirmationCode] = useState("");
 
+  const numberOfGuests = parseInt(formData.numberOfGuests) || 1;
+
+  const { data: allTables } = trpc.wedding.getTables.useQuery();
+  const { data: availableTables } = trpc.wedding.getAvailableTables.useQuery({ numberOfGuests });
+  const createBooking = trpc.wedding.createBooking.useMutation({
+    onSuccess: (booking) => {
+      setConfirmationCode((booking as any).confirmationCode ?? "");
+      setBookingComplete(true);
+      toast.success("Table booked successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message || "Failed to book table. Please try again.");
+    },
+  });
+
+  const availableTableIds = new Set(availableTables?.map((t) => String(t.tableId)) ?? []);
+
   const handleTableSelect = (tableNumber: number) => {
+    const table = allTables?.find((t) => t.tableNumber === tableNumber);
+    if (!table) return;
+    const tableId = String((table as any)._id);
+    if (!availableTableIds.has(tableId)) return;
     setSelectedTable(tableNumber);
   };
 
@@ -34,10 +55,7 @@ export default function Booking() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -53,21 +71,21 @@ export default function Booking() {
       return;
     }
 
-    setIsSubmitting(true);
-
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      const code = Math.random().toString(36).substring(2, 8).toUpperCase();
-      setConfirmationCode(code);
-      setBookingComplete(true);
-      toast.success("Table booked successfully!");
-    } catch (error) {
-      toast.error("Failed to book table. Please try again.");
-    } finally {
-      setIsSubmitting(false);
+    const table = allTables?.find((t) => t.tableNumber === selectedTable);
+    if (!table) {
+      toast.error("Selected table not found. Please try again.");
+      return;
     }
+
+    const tableId = String((table as any)._id);
+    createBooking.mutate({
+      tableId,
+      guestName: formData.guestName,
+      guestEmail: formData.guestEmail,
+      guestPhone: formData.guestPhone || undefined,
+      numberOfGuests,
+      specialRequests: formData.specialRequests || undefined,
+    });
   };
 
   if (bookingComplete) {
@@ -145,19 +163,28 @@ export default function Booking() {
             <Card className="card-elegant p-6">
               <h2 className="text-xl font-bold mb-4">Select Table</h2>
               <div className="grid grid-cols-4 gap-2">
-                {Array.from({ length: 25 }, (_, i) => i + 1).map((tableNum) => (
-                  <button
-                    key={tableNum}
-                    onClick={() => handleTableSelect(tableNum)}
-                    className={`p-2 rounded border-2 font-bold transition-all ${
-                      selectedTable === tableNum
-                        ? "bg-accent text-accent-foreground border-accent"
-                        : "bg-card border-border hover:border-accent"
-                    }`}
-                  >
-                    {tableNum}
-                  </button>
-                ))}
+                {Array.from({ length: 25 }, (_, i) => i + 1).map((tableNum) => {
+                  const table = allTables?.find((t) => t.tableNumber === tableNum);
+                  const tableId = table ? String((table as any)._id) : null;
+                  const isAvailable = tableId ? availableTableIds.has(tableId) : true;
+                  const isSelected = selectedTable === tableNum;
+                  return (
+                    <button
+                      key={tableNum}
+                      onClick={() => handleTableSelect(tableNum)}
+                      disabled={!isAvailable}
+                      className={`p-2 rounded border-2 font-bold transition-all ${
+                        isSelected
+                          ? "bg-accent text-accent-foreground border-accent"
+                          : isAvailable
+                          ? "bg-card border-border hover:border-accent"
+                          : "bg-muted text-muted-foreground border-muted cursor-not-allowed opacity-50"
+                      }`}
+                    >
+                      {tableNum}
+                    </button>
+                  );
+                })}
               </div>
 
               {selectedTable && (
@@ -261,11 +288,11 @@ export default function Booking() {
 
                 <Button
                   type="submit"
-                  disabled={!selectedTable || isSubmitting}
+                  disabled={!selectedTable || createBooking.isPending}
                   className="w-full btn-elegant"
                   size="lg"
                 >
-                  {isSubmitting ? "Booking..." : "Complete Booking"}
+                  {createBooking.isPending ? "Booking..." : "Complete Booking"}
                 </Button>
               </form>
 

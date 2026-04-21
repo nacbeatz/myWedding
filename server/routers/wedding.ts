@@ -100,6 +100,14 @@ export const weddingRouter = router({
       return db.getBookingsByEmail(input.email);
     }),
 
+  // Search bookings by guest name
+  getBookingsByName: publicProcedure
+    .input(z.object({ name: z.string().min(1) }))
+    .query(async ({ input }) => {
+      await initializeDB();
+      return db.getBookingsByName(input.name);
+    }),
+
   // Get wedding config
   getWeddingConfig: publicProcedure.query(async () => {
     await initializeDB();
