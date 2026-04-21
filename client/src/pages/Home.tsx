@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { trpc } from "@/lib/trpc";
+import { weddingApi, type TableAvailability } from "@/lib/api";
 import { Users, MapPin, Minus, Plus, SendHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -235,23 +235,41 @@ export default function Home() {
 
   const [tableCheckOpen, setTableCheckOpen] = useState(false);
   const [tableCheckName, setTableCheckName] = useState("");
-  const [tableCheckQuery, setTableCheckQuery] = useState("");
+  const [tableCheckResults, setTableCheckResults] = useState<any[]>([]);
+  const [tableCheckFetching, setTableCheckFetching] = useState(false);
 
-  const availableTablesQuery = trpc.wedding.getAvailableTables.useQuery(
-    { numberOfGuests: rsvp.numberOfGuests },
-    { enabled: rsvp.attending === "yes" }
-  );
-  const createBookingMutation = trpc.wedding.createBooking.useMutation();
-  const tableCheckResults = trpc.wedding.getBookingsByName.useQuery(
-    { name: tableCheckQuery },
-    { enabled: tableCheckQuery.length > 0 }
-  );
+  const [availableTables, setAvailableTables] = useState<TableAvailability[]>([]);
+  const [tablesLoading, setTablesLoading] = useState(false);
+  const [bookingPending, setBookingPending] = useState(false);
 
   useEffect(() => {
-    if (rsvp.attending !== "yes" || !rsvp.tableId) return;
-    const stillAvailable = (availableTablesQuery.data ?? []).some(t => t.tableId === rsvp.tableId);
-    if (!stillAvailable) setRsvp(prev => ({ ...prev, tableId: "" }));
-  }, [availableTablesQuery.data, rsvp.attending, rsvp.tableId]);
+    if (rsvp.attending !== "yes") return;
+    setTablesLoading(true);
+    weddingApi.getAvailableTables(rsvp.numberOfGuests)
+      .then(data => {
+        setAvailableTables(data);
+        setRsvp(prev => {
+          if (prev.tableId && !data.some(t => t.tableId === prev.tableId)) {
+            return { ...prev, tableId: "" };
+          }
+          return prev;
+        });
+      })
+      .catch(() => setAvailableTables([]))
+      .finally(() => setTablesLoading(false));
+  }, [rsvp.attending, rsvp.numberOfGuests]);
+
+  const handleTableSearch = async (name: string) => {
+    if (!name.trim()) return;
+    setTableCheckFetching(true);
+    try {
+      setTableCheckResults(await weddingApi.searchByName(name));
+    } catch {
+      setTableCheckResults([]);
+    } finally {
+      setTableCheckFetching(false);
+    }
+  };
 
   const updateGuests = (delta: number) =>
     setRsvp(prev => ({ ...prev, numberOfGuests: Math.min(10, Math.max(1, prev.numberOfGuests + delta)) }));
@@ -271,8 +289,9 @@ export default function Home() {
       rsvp.message ? `Message: ${rsvp.message}` : null,
     ].filter(Boolean).join(" | ");
 
+    setBookingPending(true);
     try {
-      await createBookingMutation.mutateAsync({
+      await weddingApi.createBooking({
         tableId: rsvp.tableId,
         guestName: rsvp.guestName.trim(),
         guestEmail: rsvp.guestEmail.trim(),
@@ -282,7 +301,11 @@ export default function Home() {
       });
       setRsvpSubmitted(true);
       toast.success("RSVP sent successfully.");
-    } catch { toast.error("Unable to send RSVP. Please try again."); }
+    } catch (err: any) {
+      toast.error(err.message || "Unable to send RSVP. Please try again.");
+    } finally {
+      setBookingPending(false);
+    }
   };
 
   return (
@@ -577,7 +600,7 @@ export default function Home() {
                   type="button"
                   variant="ghost"
                   className="text-gold-700 hover:bg-gold-50 -ml-2"
-                  onClick={() => { setTableCheckOpen(false); setTableCheckName(""); setTableCheckQuery(""); }}
+                  onClick={() => { setTableCheckOpen(false); setTableCheckName(""); setTableCheckResults([]); }}
                 >
                   ← {lang === "en" ? "Back to RSVP" : "Subira Gusaba"}
                 </Button>
@@ -587,7 +610,7 @@ export default function Home() {
                     placeholder={t[lang].checkTablePlaceholder}
                     value={tableCheckName}
                     onChange={e => setTableCheckName(e.target.value)}
-                    onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); setTableCheckQuery(tableCheckName.trim()); } }}
+                    onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); handleTableSearch(tableCheckName); } }}
                     className="bg-white"
                     autoFocus
                   />
@@ -595,17 +618,17 @@ export default function Home() {
                     type="button"
                     variant="outline"
                     className="border-gold-300 text-gold-700 hover:bg-gold-50 shrink-0"
-                    onClick={() => setTableCheckQuery(tableCheckName.trim())}
-                    disabled={tableCheckResults.isFetching}
+                    onClick={() => handleTableSearch(tableCheckName)}
+                    disabled={tableCheckFetching}
                   >
-                    {tableCheckResults.isFetching ? t[lang].checkTableSearching : t[lang].checkTableSearch}
+                    {tableCheckFetching ? t[lang].checkTableSearching : t[lang].checkTableSearch}
                   </Button>
                 </div>
 
-                {tableCheckQuery.length > 0 && !tableCheckResults.isFetching && (
-                  tableCheckResults.data && tableCheckResults.data.length > 0 ? (
+                {!tableCheckFetching && (
+                  tableCheckResults.length > 0 ? (
                     <div className="space-y-2 pt-1">
-                      {tableCheckResults.data.map((booking: any) => {
+                      {tableCheckResults.map((booking: any) => {
                         const tableNumber = booking.tableNumber;
                         return (
                           <div key={booking._id} className="flex items-center justify-between bg-gold-50 border border-gold-200 rounded-xl px-5 py-4">
@@ -674,17 +697,17 @@ export default function Home() {
                       <Label className="text-lg font-semibold text-dark mb-2 block">{t[lang].selectTable}</Label>
                       <Select value={rsvp.tableId} onValueChange={v => setRsvp(prev => ({ ...prev, tableId: v }))}>
                         <SelectTrigger className="w-full mt-1 bg-white">
-                          <SelectValue placeholder={availableTablesQuery.isLoading ? t[lang].loading : t[lang].chooseTable} />
+                          <SelectValue placeholder={tablesLoading ? t[lang].loading : t[lang].chooseTable} />
                         </SelectTrigger>
                         <SelectContent>
-                          {(availableTablesQuery.data ?? []).map(tbl => (
+                          {availableTables.map(tbl => (
                             <SelectItem key={tbl.tableId} value={tbl.tableId}>
                               Table {tbl.tableNumber} — {tbl.availableSeats} {t[lang].seatsLeft}
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
-                      {!availableTablesQuery.isLoading && (availableTablesQuery.data ?? []).length === 0 && (
+                      {!tablesLoading && availableTables.length === 0 && (
                         <p className="text-sm text-destructive mt-2">{t[lang].noSeats.replace("{n}", String(rsvp.numberOfGuests))}</p>
                       )}
                     </div>
@@ -707,16 +730,16 @@ export default function Home() {
                   <Textarea value={rsvp.message} onChange={e => setRsvp(prev => ({ ...prev, message: e.target.value }))} placeholder={t[lang].messagePlaceholder} className="bg-white" rows={3} />
                 </div>
 
-                <Button type="submit" className="w-full bg-gold-600 hover:bg-gold-700 text-white" disabled={createBookingMutation.isPending}>
+                <Button type="submit" className="w-full bg-gold-600 hover:bg-gold-700 text-white" disabled={bookingPending}>
                   <SendHorizontal className="h-4 w-4 mr-2" />
-                  {createBookingMutation.isPending ? t[lang].sending : t[lang].sendRsvp}
+                  {bookingPending ? t[lang].sending : t[lang].sendRsvp}
                 </Button>
 
                 <Button
                   type="button"
                   variant="outline"
                   className="w-full border-gold-300 text-gold-700 hover:bg-gold-50"
-                  onClick={() => { setTableCheckOpen(true); setTableCheckName(""); setTableCheckQuery(""); }}
+                  onClick={() => { setTableCheckOpen(true); setTableCheckName(""); setTableCheckResults([]); }}
                 >
                   {t[lang].checkMyTable}
                 </Button>
