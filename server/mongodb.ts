@@ -31,6 +31,9 @@ export async function connectToDatabase() {
     cached.promise = mongoose
       .connect(mongoUri, {
         bufferCommands: false,
+        maxPoolSize: 1,           // serverless: one connection per function instance
+        serverSelectionTimeoutMS: 5000,
+        socketTimeoutMS: 45000,
       })
       .then((m) => {
         console.log("[MongoDB] Connected successfully");
