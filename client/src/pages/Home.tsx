@@ -51,6 +51,7 @@ type RSVPState = {
   guestEmail: string;
   guestPhone: string;
   childrenAttending: "yes" | "no";
+  numberOfChildren: number;
   message: string;
   tableId: string;
 };
@@ -225,6 +226,7 @@ export default function Home() {
     guestEmail: "",
     guestPhone: "",
     childrenAttending: "no",
+    numberOfChildren: 1,
     message: "",
     tableId: "",
   });
@@ -286,7 +288,7 @@ export default function Home() {
     if (!rsvp.tableId) { toast.error("Please select a table."); return; }
 
     const specialRequests = [
-      `Children: ${rsvp.childrenAttending}`,
+      `Children: ${rsvp.childrenAttending === "yes" ? `yes (${rsvp.numberOfChildren})` : "no"}`,
       rsvp.message ? `Message: ${rsvp.message}` : null,
     ].filter(Boolean).join(" | ");
 
@@ -705,6 +707,16 @@ export default function Home() {
                       <RadioGroupItem value="no" id="ch-n" /><Label htmlFor="ch-n" className="text-dark-600">{t[lang].no}</Label>
                     </div>
                   </RadioGroup>
+                  {rsvp.childrenAttending === "yes" && (
+                    <div className="mt-3 flex items-center gap-3">
+                      <Label className="text-sm text-dark-600 whitespace-nowrap">Number of children:</Label>
+                      <div className="flex items-center gap-2">
+                        <button type="button" onClick={() => setRsvp(prev => ({ ...prev, numberOfChildren: Math.max(1, prev.numberOfChildren - 1) }))} className="w-7 h-7 rounded-full border border-gold-300 flex items-center justify-center text-dark hover:bg-gold-100"><Minus size={12} /></button>
+                        <span className="w-6 text-center font-semibold text-dark">{rsvp.numberOfChildren}</span>
+                        <button type="button" onClick={() => setRsvp(prev => ({ ...prev, numberOfChildren: prev.numberOfChildren + 1 }))} className="w-7 h-7 rounded-full border border-gold-300 flex items-center justify-center text-dark hover:bg-gold-100"><Plus size={12} /></button>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                     <div>
