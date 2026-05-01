@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { weddingApi, type TableAvailability } from "@/lib/api";
-import { Users, MapPin, Minus, Plus, SendHorizontal } from "lucide-react";
+import { Users, MapPin, Minus, Plus, SendHorizontal, Copy, Check } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -215,6 +215,7 @@ const t = {
 
 export default function Home() {
   const [lang, setLang] = useState<Lang>("en");
+  const [copiedIban, setCopiedIban] = useState<string | null>(null);
   const [countdown, setCountdown] = useState<CountdownState>(() => getCountdown(WEDDING_DATE));
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
   const [rsvp, setRsvp] = useState<RSVPState>({
@@ -576,11 +577,13 @@ export default function Home() {
                     <button
                       onClick={() => {
                         navigator.clipboard.writeText(acc.iban.replace(/\s/g, ""));
-                        toast.success("IBAN copied!");
+                        setCopiedIban(acc.iban);
+                        setTimeout(() => setCopiedIban(null), 2000);
                       }}
-                      className="text-xs text-[#be9a63] border border-[#be9a63] rounded px-2 py-0.5 hover:bg-[#be9a63] hover:text-white transition-colors whitespace-nowrap"
+                      className="text-[#be9a63] hover:text-[#a07840] transition-colors"
+                      title="Copy IBAN"
                     >
-                      Copy
+                      {copiedIban === acc.iban ? <Check size={16} /> : <Copy size={16} />}
                     </button>
                   </div>
                   <p className="text-dark-600 text-sm">MOTIF: Cadeau Mariage</p>
