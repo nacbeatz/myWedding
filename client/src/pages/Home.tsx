@@ -571,7 +571,18 @@ export default function Home() {
               ].map(acc => (
                 <Card key={acc.bic} className="bg-[#efede8] border border-gold-100 rounded-xl p-6 shadow-sm">
                   <h3 className="text-base tracking-[0.14em] uppercase font-semibold text-dark mb-3">{acc.bank}</h3>
-                  <p className="text-dark-600 text-sm">IBAN: {acc.iban}   (BIC/SWIFT: {acc.bic})</p>
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className="text-dark-600 text-sm">IBAN: {acc.iban}   (BIC/SWIFT: {acc.bic})</p>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(acc.iban.replace(/\s/g, ""));
+                        toast.success("IBAN copied!");
+                      }}
+                      className="text-xs text-[#be9a63] border border-[#be9a63] rounded px-2 py-0.5 hover:bg-[#be9a63] hover:text-white transition-colors whitespace-nowrap"
+                    >
+                      Copy
+                    </button>
+                  </div>
                   <p className="text-dark-600 text-sm">MOTIF: Cadeau Mariage</p>
                 </Card>
               ))}
