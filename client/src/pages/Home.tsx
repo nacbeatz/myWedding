@@ -18,8 +18,7 @@ import { toast } from "sonner";
 
 const SEAL_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/88306074/mwrNRhRAgBrtZ3TnyqG9SP/monogram-seal-9DHfjCGCpJEWr5NThfwrog.webp";
 const CUPID_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/88306074/mwrNRhRAgBrtZ3TnyqG9SP/cupid-illustration-Ko33StVJEtx9KhHynz9E6G.webp";
-const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1920&q=80";
+const HERO_IMAGE = "/background.png";
 const WEDDING_DATE = new Date("2026-07-25T00:00:00+02:00");
 const WEDDING_DATE_LABEL = "25 July 2026";
 const WEDDING_LOCATION = "Chaussée de Gand 389, 1080 Molenbeek-Saint-Jean";
