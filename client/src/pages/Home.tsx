@@ -38,7 +38,6 @@ const DAY_PROGRAMME_KEYS = [
   { time: "16:00", key: "cocktails" as const, side: "right" as const },
   { time: "18:00", key: "dinner" as const, side: "left" as const },
   { time: "20:00", key: "cuttingCake" as const, side: "right" as const },
-  { time: "00:00", key: "finish" as const, side: "left" as const },
 ];
 
 type CountdownState = { days: number; hours: number; minutes: number };
