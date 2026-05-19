@@ -33,8 +33,8 @@ const WELCOME_GALLERY_IMAGES = [
   "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=600&q=80",
 ];
 const DAY_PROGRAMME_KEYS = [
-  { time: "14:00", key: "arrival" as const, side: "right" as const },
-  { time: "14:30", key: "ceremony" as const, side: "left" as const },
+  { time: "10:00", key: "arrival" as const, side: "right" as const },
+  { time: "13:00", key: "ceremony" as const, side: "left" as const },
   { time: "16:00", key: "cocktails" as const, side: "right" as const },
   { time: "18:00", key: "dinner" as const, side: "left" as const },
   { time: "20:00", key: "cuttingCake" as const, side: "right" as const },
@@ -132,8 +132,8 @@ const t = {
     readyCta: "Ready to Celebrate With Us?",
     readyCtaSub: "Reserve your table now and be part of this special celebration",
     rsvpNow: "RSVP Now",
-    arrival: "Arrival",
-    ceremony: "Ceremony",
+    arrival: "Dowry Ceremony",
+    ceremony: "Religous Wedding",
     cocktails: "Cocktails",
     dinner: "Dinner",
     cuttingCake: "Cutting The Cake",
@@ -184,10 +184,10 @@ const t = {
     selectTable: "Hitamo Ameza *",
     loading: "Tegereza...",
     chooseTable: "Hitamo ameza",
-    seatsLeft: "imyanya isigaye",
+    seatsLeft: "Imyanya isigaye",
     noSeats: "Nta meza afite imyanya {n} agihari.",
-    person1: "Uwo twabaza",
-    fullName: "Amazina yombi",
+    person1: "Amazina yombi",
+    fullName: "Andika hano amazina",
     emailAddress: "E-mail",
     dietary: "Telefone (WhatsApp)",
     dietaryPlaceholder: "urugero: +250 78 000 0000",
@@ -204,7 +204,7 @@ const t = {
     readyCta: "Witeguye Kwishimana Natwe?",
     readyCtaSub: "Fata umwanya uzicaramo muri ubu bukwe bwacu",
     rsvpNow: "Kanda hano",
-    arrival: "Kuhagera",
+    arrival: "Gusaba no gukwa",
     ceremony: "Umuhango",
     cocktails: "Ibinyobwa",
     dinner: "Amafunguro",
@@ -525,7 +525,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ───── Pre-Wedding Events ───── */}
+      {/* ───── Pre-Wedding Events 
       <section className="bg-[#be9a63] py-20 px-4">
         <div className="container max-w-4xl mx-auto">
           <div className="text-center mb-10">
@@ -554,7 +554,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+───── */}
       {/* ───── Gifts ───── */}
       <section
         className="py-20 px-4 bg-cover bg-center"
@@ -568,13 +568,13 @@ export default function Home() {
             </p>
             <div className="space-y-4">
               {[
-                { bank: "Anaclet Nsabimana - ING Bank", iban: "BE05 3631 1987 6175", bic: "KREDBEBB" },
-                { bank: "Ingabire Claudine - ING Bank", iban: "BE98 7654 3210 9876", bic: "GEBABEBB" },
+                { bank: "Anaclet Nsabimana - ING Bank", iban: "BE05 3631 1987 6175", bic: "" },
+                { bank: "Ingabire Claudine - ING Bank", iban: "BE24 3771 4328 8538", bic: "(Amazina: Irebe Rutayisire)" },
               ].map(acc => (
                 <Card key={acc.bic} className="bg-[#efede8] border border-gold-100 rounded-xl p-6 shadow-sm">
                   <h3 className="text-base tracking-[0.14em] uppercase font-semibold text-dark mb-3">{acc.bank}</h3>
                   <div className="flex items-center gap-2 mb-1">
-                    <p className="text-dark-600 text-sm">IBAN: {acc.iban}   (BIC/SWIFT: {acc.bic})</p>
+                    <p className="text-dark-600 text-sm">IBAN: {acc.iban}   {acc.bic}</p>
                     <button
                       onClick={() => {
                         navigator.clipboard.writeText(acc.iban.replace(/\s/g, ""));
@@ -587,7 +587,7 @@ export default function Home() {
                       {copiedIban === acc.iban ? <Check size={16} /> : <Copy size={16} />}
                     </button>
                   </div>
-                  <p className="text-dark-600 text-sm">MOTIF: Cadeau Mariage</p>
+                  <p className="text-dark-600 text-sm">MOTIF: Cadeau Marriage</p>
                 </Card>
               ))}
             </div>
@@ -727,7 +727,9 @@ export default function Home() {
                         <SelectContent>
                           {availableTables.map(tbl => (
                             <SelectItem key={tbl.tableId} value={tbl.tableId}>
-                              Table {tbl.tableNumber} — {tbl.availableSeats} {t[lang].seatsLeft}
+                              {lang === "en"
+                                ? `Table ${tbl.tableNumber} — ${tbl.availableSeats} seats left`
+                                : `Ameza ya ${tbl.tableNumber} — ${t.rw.seatsLeft} ${tbl.availableSeats}`}
                             </SelectItem>
                           ))}
                         </SelectContent>
